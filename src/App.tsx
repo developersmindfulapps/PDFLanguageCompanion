@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react';
 import type { PDFDocumentProxy, PDFDocumentInfo, ZoomState, PDFLoadError } from './types/pdf';
 import { pdfService } from './services/pdfService';
 import { useDictionaryTooltip } from './hooks/useDictionaryTooltip';
+import { useOCR } from './hooks/useOCR';
 import { DictionaryTooltip } from './components/DictionaryTooltip/DictionaryTooltip';
 import { Navbar } from './components/Navbar';
 import { FilePicker } from './components/FilePicker';
@@ -21,6 +22,16 @@ export const App: React.FC = () => {
   const [lastSelectedFile, setLastSelectedFile] = useState<File | null>(null);
 
   const {
+    currentOCRResult,
+    isProcessing: isOCRProcessing,
+    progress: ocrProgress,
+    error: ocrError,
+    runOCR,
+    cancelOCR,
+    clearCache: clearOCRCache,
+  } = useOCR({ currentPage });
+
+  const {
     activeSelection,
     dictionaryResult,
     handleWordSelected,
@@ -32,6 +43,7 @@ export const App: React.FC = () => {
     setError(null);
     setLastSelectedFile(file);
     closeTooltip();
+    await clearOCRCache();
 
     try {
       const loadedDoc = await pdfService.loadDocument(file);
@@ -57,9 +69,10 @@ export const App: React.FC = () => {
     } finally {
       setIsLoadingDoc(false);
     }
-  }, [closeTooltip]);
+  }, [closeTooltip, clearOCRCache]);
 
   const handleReset = useCallback(async () => {
+    await clearOCRCache();
     await pdfService.cleanupCurrentDocument();
     setDoc(null);
     setDocInfo(null);
@@ -67,7 +80,7 @@ export const App: React.FC = () => {
     setLastSelectedFile(null);
     closeTooltip();
     setCurrentPage(1);
-  }, [closeTooltip]);
+  }, [closeTooltip, clearOCRCache]);
 
   const handleRetry = useCallback(() => {
     if (lastSelectedFile) {
@@ -111,6 +124,13 @@ export const App: React.FC = () => {
               doc={doc}
               currentPage={currentPage}
               zoom={zoom}
+              ocrResult={currentOCRResult}
+              isOCRProcessing={isOCRProcessing}
+              ocrProgress={ocrProgress?.progress}
+              ocrStatusText={ocrProgress?.status}
+              ocrError={ocrError}
+              onRunOCR={(canvas) => runOCR(canvas, currentPage)}
+              onCancelOCR={cancelOCR}
               onPageChange={handlePageChange}
               onZoomChange={handleZoomChange}
               onLoadingStateChange={setIsLoadingPage}

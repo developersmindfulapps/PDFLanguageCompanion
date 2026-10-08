@@ -72,10 +72,10 @@ async function verifyPhase6() {
   const umlautCases = [
     { word: 'Straße', contains: 'street' },
     { word: 'Mädchen', contains: 'girl' },
-    { word: 'größer', contains: 'bigger' },
-    { word: 'Äpfel', contains: 'apples' },
-    { word: 'Öle', contains: 'oils' },
-    { word: 'Übungen', contains: 'exercises' }
+    { word: 'größer', contains: 'big' },
+    { word: 'Äpfel', contains: 'apple' },
+    { word: 'Öle', contains: 'oil' },
+    { word: 'Übungen', contains: 'exercise' }
   ];
 
   for (const { word, contains } of umlautCases) {

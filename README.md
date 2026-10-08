@@ -239,12 +239,10 @@ Known Limitations
 
 - Scanned / image-only PDFs: The MVP does not contain OCR. Documents made entirely of scanned page images cannot provide selectable text.
 - Document-wide search: Full-text multi-page search is not implemented in MVP v1.
-- Dictionary vocabulary: The bundled dictionary contains approximately 483 high-frequency A1/A2 German vocabulary entries and 200 lemma inflection mappings designed for MVP validation. It is not a comprehensive lexicon.
+- Dictionary vocabulary: The bundled German → English dictionary contains 15,159 headwords and 104,252 inflection mappings generated reproducibly from English Wiktionary (German entries).
 
 Future Roadmap
 
-- Optical Character Recognition (OCR) support for scanned and image-only PDFs
-- Expanded dictionary vocabulary covering intermediate and advanced (B1–C2) German
 - Support for additional source and target language pairs (such as Spanish → English, French → English)
 - Advanced contextual lemmatization and compound noun decomposition
 - Additional reading productivity tools
@@ -256,7 +254,6 @@ The dictionary engine uses a decoupled provider pattern:
 ```typescript
 export interface DictionaryProvider {
   lookup(word: string, sourceLang: string, targetLang: string): Promise<DictionaryResult | null>;
-  supportsLanguagePair(sourceLang: string, targetLang: string): boolean;
 }
 ```
 
@@ -264,11 +261,13 @@ This abstraction allows future language providers (e.g. Spanish → English, Fre
 
 Dictionary Attribution & Licensing
 
-The initial MVP dictionary dataset is derived from lexical extracts from:
-- The FreeDict Project (`deu-eng`): [https://freedict.org/](https://freedict.org/)
-- Wiktionary: [https://www.wiktionary.org/](https://www.wiktionary.org/)
-
-Pre-publication note: The bundled dictionary dataset is provided for development, personal evaluation, and MVP testing. Prior to public store distribution, independent verification of the dataset provenance, licensing terms (such as CC-BY-SA / GPL), and attribution compliance is required.
+The German → English dictionary dataset (`src/data/de-en-dictionary.json` and `src/data/de-en-inflections.json`) is derived from English Wiktionary data extracted by the Kaikki.org / Wiktextract project:
+- **Upstream Source**: [English Wiktionary](https://en.wiktionary.org/) (German entries)
+- **Extraction Project**: [Kaikki.org / Wiktextract](https://kaikki.org/dictionary/German/) (Tatu Ylonen)
+- **Dump Snapshot**: 2026-09-02 (`enwiktionary-20260902-pages-articles-multistream.xml.bz2`)
+- **Dataset License**: Creative Commons Attribution-ShareAlike 4.0 International (CC-BY-SA 4.0) & GNU Free Documentation License (GFDL)
+- **Software License**: Wiktextract is licensed under the MIT License
+- **Full Attribution & License Text**: See [`LICENSE_DICTIONARY.txt`](./LICENSE_DICTIONARY.txt) and [`public/LICENSE_DICTIONARY.txt`](./public/LICENSE_DICTIONARY.txt)
 
 Development Principles
 

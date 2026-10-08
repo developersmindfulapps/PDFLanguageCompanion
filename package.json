@@ -7,16 +7,21 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "typecheck": "tsc --noEmit",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "dictionary:fetch": "node scripts/fetch-dictionary-source.mjs",
+    "dictionary:build": "node scripts/build-dictionary.mjs",
+    "dictionary:verify": "node scripts/verify-dictionary.mjs"
   },
   "dependencies": {
     "@floating-ui/react": "^0.27.20",
     "lucide-react": "^1.16.0",
     "pdfjs-dist": "^4.10.38",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "tesseract.js": "^7.0.0"
   },
   "devDependencies": {
+    "@tesseract.js-data/deu": "^1.0.0",
     "@types/chrome": "^0.0.308",
     "@types/node": "^26.6.4",
     "@types/react": "^18.3.18",

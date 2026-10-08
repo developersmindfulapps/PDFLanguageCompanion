@@ -1,0 +1,30 @@
+{
+  "source": "Kaikki.org English Wiktionary (German Entries)",
+  "snapshotDate": "2026-09-02",
+  "sourceUrl": "https://kaikki.org/dictionary/German/kaikki.org-dictionary-German.jsonl.gz",
+  "sourceSha256": "ff03802fa4d034a80c03fd72a78243834cc06e69d7031c7be9d745a02c78b34e",
+  "generatorVersion": "1.0.0",
+  "rawLinesProcessed": 371261,
+  "acceptedHeadwordsCount": 15000,
+  "inflectionKeysCount": 96715,
+  "rejectedEntriesCount": 286032,
+  "posDistribution": {
+    "pron": 136,
+    "art": 12,
+    "verb": 3049,
+    "interj": 385,
+    "prep": 153,
+    "noun": 9726,
+    "adj": 1335,
+    "adv": 569,
+    "prep+art": 8,
+    "conj": 99,
+    "num": 204,
+    "det": 30,
+    "part": 15
+  },
+  "nounsWithGender": 9689,
+  "nounsWithPlural": 9103,
+  "license": "CC-BY-SA 4.0 / GFDL",
+  "attribution": "Derived from Wiktionary data via Kaikki.org (Wiktextract by Tatu Ylonen)"
+}

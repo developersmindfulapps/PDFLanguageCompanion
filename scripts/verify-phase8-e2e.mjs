@@ -33,7 +33,7 @@ async function verifyPhase8E2E() {
     throw new Error(`Failed to extract Wörter: ${JSON.stringify(extraction1)}`);
   }
   const lookup1 = await localDictionaryProvider.lookup(extraction1.word, 'de', 'en');
-  if (!lookup1 || !lookup1.translations.includes('words')) {
+  if (!lookup1 || (!lookup1.translations.some(t => t.toLowerCase().includes('word')) && !lookup1.translations.includes('words'))) {
     throw new Error(`Failed lookup for "${extraction1.word}": got ${JSON.stringify(lookup1)}`);
   }
   console.log(`✓ Clicked "${extraction1.word}" -> Lemma: "${lookup1.lemma || 'N/A'}", Translations: [${lookup1.translations.join(', ')}] (POS: ${lookup1.partOfSpeech})`);

@@ -2,11 +2,14 @@ import { useEffect, useState, useCallback, useRef } from 'react';
 import type { WordSelection } from '../types/selection';
 import { cleanWordToken, isSingleWord, extractWordAtOffset } from '../utils/textUtils';
 
-interface UseWordSelectionOptions {
+export type WordSelectionMode = 'click-or-select' | 'selection-only';
+
+export interface UseWordSelectionOptions {
   containerRef: React.RefObject<HTMLElement | null>;
   pageNumber: number;
   onWordSelected?: (selection: WordSelection | null) => void;
   enabled?: boolean;
+  mode?: WordSelectionMode;
 }
 
 export function useWordSelection({
@@ -14,6 +17,7 @@ export function useWordSelection({
   pageNumber,
   onWordSelected,
   enabled = true,
+  mode = 'click-or-select',
 }: UseWordSelectionOptions) {
   const [selectedWord, setSelectedWord] = useState<WordSelection | null>(null);
   const onWordSelectedRef = useRef(onWordSelected);
@@ -56,13 +60,43 @@ export function useWordSelection({
           if (cleaned) {
             try {
               const range = selection.getRangeAt(0);
+
+              // In selection-only mode (OCR), ensure the selection represents exactly ONE complete OCR word
+              if (mode === 'selection-only') {
+                const startEl = range.startContainer.nodeType === Node.TEXT_NODE
+                  ? range.startContainer.parentElement
+                  : (range.startContainer as HTMLElement);
+                const endEl = range.endContainer.nodeType === Node.TEXT_NODE
+                  ? range.endContainer.parentElement
+                  : (range.endContainer as HTMLElement);
+
+                // Multi-element selection is rejected
+                if (!startEl || startEl !== endEl) {
+                  setSelection(null);
+                  return;
+                }
+
+                // Verify that the selection represents the complete OCR word (reject partial selections)
+                const fullOcrText = startEl.getAttribute('data-ocr-word') || startEl.textContent || '';
+                const fullCleaned = cleanWordToken(fullOcrText);
+
+                if (!fullCleaned || cleaned.toLowerCase() !== fullCleaned.toLowerCase()) {
+                  // User selected only a substring/partial word
+                  setSelection(null);
+                  return;
+                }
+              }
+
               const rect = range.getBoundingClientRect();
-              // Only accept valid visible rects
-              if (rect.width > 0 && rect.height > 0) {
+              const validRect = rect.width > 0 && rect.height > 0;
+              const fallbackRect = range.startContainer.parentElement?.getBoundingClientRect();
+              const finalRect = validRect ? rect : fallbackRect;
+
+              if (finalRect && finalRect.width > 0 && finalRect.height > 0) {
                 setSelection({
                   word: cleaned,
                   pageNumber,
-                  rect,
+                  rect: finalRect,
                 });
                 return;
               }
@@ -77,7 +111,13 @@ export function useWordSelection({
         }
       }
 
-      // 3. Check for single click at point
+      // In selection-only mode (OCR), simple clicks must NEVER trigger a tooltip
+      if (mode === 'selection-only') {
+        setSelection(null);
+        return;
+      }
+
+      // 3. Normal text-PDF mode: Check for single click at point
       let targetNode: Node | null = null;
       let targetOffset = 0;
 
@@ -148,7 +188,7 @@ export function useWordSelection({
     return () => {
       document.removeEventListener('mouseup', handleMouseUp);
     };
-  }, [containerRef, pageNumber, enabled, selectedWord, setSelection]);
+  }, [containerRef, pageNumber, enabled, mode, selectedWord, setSelection]);
 
   return {
     selectedWord,

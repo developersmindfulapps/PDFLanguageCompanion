@@ -4,12 +4,21 @@ import type { WordSelection } from '../types/selection';
 import { pdfService } from '../services/pdfService';
 import { LoadingSpinner } from './LoadingSpinner';
 import { TextLayer } from './TextLayer';
+import { OCRTextLayer } from './OCRTextLayer';
 import { EmptyTextWarning } from './EmptyTextWarning';
+import type { OCRPageResult } from '../services/ocr/ocrTypes';
 
 interface PDFViewerProps {
   doc: PDFDocumentProxy;
   currentPage: number;
   zoom: ZoomState;
+  ocrResult?: OCRPageResult | null;
+  isOCRProcessing?: boolean;
+  ocrProgress?: number;
+  ocrStatusText?: string;
+  ocrError?: string | null;
+  onRunOCR?: (canvas: HTMLCanvasElement | null) => void;
+  onCancelOCR?: () => void;
   onPageChange: (newPage: number) => void;
   onZoomChange: (newZoom: ZoomState) => void;
   onLoadingStateChange: (isLoading: boolean) => void;
@@ -20,6 +29,13 @@ export const PDFViewer: React.FC<PDFViewerProps> = ({
   doc,
   currentPage,
   zoom,
+  ocrResult,
+  isOCRProcessing,
+  ocrProgress,
+  ocrStatusText,
+  ocrError,
+  onRunOCR,
+  onCancelOCR,
   onPageChange,
   onZoomChange,
   onLoadingStateChange,
@@ -175,9 +191,18 @@ export const PDFViewer: React.FC<PDFViewerProps> = ({
       className="flex-1 overflow-auto bg-slate-200/80 p-6 flex items-start justify-center focus:outline-none"
     >
       <div className="relative flex flex-col items-center">
-        {/* Scanned / Image-only PDF Warning */}
-        {hasTextContent === false && (
-          <EmptyTextWarning className="mb-4 w-full max-w-lg animate-in fade-in duration-200" />
+        {/* Scanned / Image-only PDF Warning or OCR Status Banner */}
+        {(hasTextContent === false || isOCRProcessing || ocrError) && !ocrResult && (
+          <EmptyTextWarning
+            className="mb-4 w-full max-w-lg animate-in fade-in duration-200"
+            isProcessing={isOCRProcessing}
+            progress={ocrProgress}
+            statusText={ocrStatusText}
+            errorMessage={ocrError}
+            onRunOCR={() => onRunOCR?.(canvasRef.current)}
+            onCancelOCR={onCancelOCR}
+            onRetryOCR={() => onRunOCR?.(canvasRef.current)}
+          />
         )}
 
         {/* Page Container holding Canvas + TextLayer */}
@@ -186,12 +211,22 @@ export const PDFViewer: React.FC<PDFViewerProps> = ({
 
           {/* Text Layer aligned 1:1 with Canvas */}
           {activePage && !isRendering && (
-            <TextLayer
-              page={activePage}
-              scale={currentScale}
-              onHasTextChange={setHasTextContent}
-              onWordSelected={onWordSelected}
-            />
+            ocrResult && ocrResult.pageNumber === currentPage ? (
+              <OCRTextLayer
+                ocrResult={ocrResult}
+                pageNumber={currentPage}
+                page={activePage}
+                scale={currentScale}
+                onWordSelected={onWordSelected}
+              />
+            ) : (
+              <TextLayer
+                page={activePage}
+                scale={currentScale}
+                onHasTextChange={setHasTextContent}
+                onWordSelected={onWordSelected}
+              />
+            )
           )}
 
           {/* Page Loading Overlay */}
