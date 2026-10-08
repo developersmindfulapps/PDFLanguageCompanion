@@ -1,0 +1,11 @@
+@import './styles/textLayer.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    user-select: none;
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "PDF Language Companion",
+  "version": "0.1.0",
+  "description": "Read PDFs with instant local word lookups.",
+  "action": {
+    "default_title": "Open PDF Language Companion"
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}
