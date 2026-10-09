@@ -163,6 +163,7 @@ export async function buildDictionary(options = {}) {
   // Map<word, { word, senses: LexicalSense[], score: number, primaryPos: string }>
   const headwordsMap = new Map();
   const rawInflectionPairs = []; // [ { inflected, lemma } ]
+  const etymologyComponentLinks = []; // [ { compound, root } ]
 
   const NOISE_TAGS = new Set(['archaic', 'obsolete', 'historical', 'nonstandard', 'slang', 'rare', 'proper-noun']);
 
@@ -263,6 +264,23 @@ export async function buildDictionary(options = {}) {
       }
     }
 
+    // Extract root components from etymology compound/affix templates for centrality scoring
+    if (entry.etymology_templates && Array.isArray(entry.etymology_templates)) {
+      for (const et of entry.etymology_templates) {
+        if (et.args && typeof et.args === 'object') {
+          for (const key of Object.keys(et.args)) {
+            const val = et.args[key];
+            if (typeof val === 'string' && val.length >= 2 && !val.includes(':') && !val.startsWith('-') && !val.endsWith('-')) {
+              const cleanVal = val.replace(/<[^>]+>/g, '').trim();
+              if (cleanVal && cleanVal !== word && /^[A-Za-zÄÖÜäöüß]+$/.test(cleanVal)) {
+                etymologyComponentLinks.push({ compound: word, root: cleanVal });
+              }
+            }
+          }
+        }
+      }
+    }
+
     // If entry is pure form-of or has no valid translations, don't store as headword
     if (isPureFormOf || validTranslations.length === 0) {
       rejectedCount++;
@@ -287,7 +305,7 @@ export async function buildDictionary(options = {}) {
     const gender = pos === 'noun' ? extractGender(entryTags, senses) : undefined;
     const plural = pos === 'noun' ? extractPlural(entry.forms) : undefined;
 
-    // 2. POS-aware root-word bonus (shorter core words get priority over long obscure compounds)
+    // 2. POS-aware root-word bonus (balanced for core roots and learner-relevant compounds)
     const isVerb = pos === 'verb';
     const len = word.length;
     if (isVerb) {
@@ -298,26 +316,46 @@ export async function buildDictionary(options = {}) {
     } else {
       if (len <= 5) score += 7000;
       else if (len <= 7) score += 6000;
-      else if (len <= 9) score += 5000;
-      else if (len <= 12) score += 4000;
-      else if (len <= 15) score += 2500;
-      else if (len <= 18) score += 1000;
-      else score -= 3000;
+      else if (len <= 10) score += 5500;
+      else if (len <= 13) score += 4500;
+      else if (len <= 16) score += 3500;
+      else if (len <= 19) score += 1500;
+      else score -= 2000;
     }
 
     if (gender) score += 400;
     if (plural) score += 500;
+    if (isVerb && entry.forms && entry.forms.length >= 8) score += 3000;
 
     // 3. Audio presence (huge indicator of authentic spoken German)
-    const hasAudio = entry.sounds && entry.sounds.some(s => s.audio || s.ogg_url || s.mp3_url);
-    if (hasAudio) score += 4000;
+    const audioCount = entry.sounds ? entry.sounds.filter(s => s.audio || s.ogg_url || s.mp3_url).length : 0;
+    if (audioCount >= 3) score += 5500;
+    else if (audioCount >= 1) score += 4000;
     else if (entry.sounds && entry.sounds.length > 0) score += 1000;
 
     // 4. Etymology & historical root depth
+    const hasCompoundEtym = entry.etymology_templates && entry.etymology_templates.some(t =>
+      t.name && ['compound', 'com', 'af', 'prefix', 'suffix'].includes(t.name.toLowerCase())
+    );
     if (entry.etymology_text || (entry.etymology_templates && entry.etymology_templates.length > 0)) score += 1500;
+    if (hasCompoundEtym) score += 1500;
     if (entry.descendants && entry.descendants.length > 0) score += 800;
 
-    // 5. Derived words & compounds count (found either at entry.derived, entry.related, or senses[].derived)
+    // 5. Compound prefix boost for productive German learner vocabulary
+    if (pos === 'noun') {
+      const COMMON_COMPOUND_PREFIXES = [
+        'Lieblings', 'Geburts', 'Telefon', 'Haupt', 'Haus', 'Wohn', 'Sprach',
+        'Kurs', 'Fahr', 'Flug', 'Arbeits', 'Familien', 'Post', 'Kranken',
+        'Kinder', 'Wörter', 'Tages', 'Jahres', 'Schul', 'Stadt', 'Reise',
+        'Sport', 'Auto', 'Bahn', 'Bus', 'Zug', 'Geld', 'Kauf', 'Sommer',
+        'Winter', 'Wochen', 'Monats', 'Vor', 'Nach', 'Geburt'
+      ];
+      if (COMMON_COMPOUND_PREFIXES.some(prefix => word.startsWith(prefix) && word.length >= prefix.length + 3)) {
+        score += 2500;
+      }
+    }
+
+    // 6. Derived words & compounds count (found either at entry.derived, entry.related, or senses[].derived)
     let derivedCount = (entry.derived || []).length + (entry.related || []).length;
     for (const s of senses) {
       if (s.derived) derivedCount += s.derived.length;
@@ -325,7 +363,7 @@ export async function buildDictionary(options = {}) {
     }
     if (derivedCount > 0) score += Math.min(derivedCount * 50, 1500);
 
-    // 6. Examples / Synonyms / Topical Categories / Head templates
+    // 7. Examples / Synonyms / Topical Categories / Head templates
     if (senses.some(s => s.examples && s.examples.length > 0)) score += 800;
     if (senses.some(s => s.synonyms && s.synonyms.length > 0)) score += 400;
     if (entry.categories && entry.categories.some(c => c.orig && c.orig.startsWith('de:'))) score += 600;
@@ -366,17 +404,21 @@ export async function buildDictionary(options = {}) {
 
   console.log(`[build-dictionary] Raw lines: ${rawLineCount}, Unique raw headwords: ${headwordsMap.size}, Raw inflection links: ${rawInflectionPairs.length}`);
 
-  // Count inbound inflection links per lemma (morphological centrality score)
+  // Count inbound inflection links and compound root pointers per lemma (morphological centrality score)
   const inboundCount = new Map();
   for (const pair of rawInflectionPairs) {
     const lemma = pair.lemma;
     inboundCount.set(lemma, (inboundCount.get(lemma) || 0) + 1);
   }
+  for (const link of etymologyComponentLinks) {
+    const root = link.root;
+    inboundCount.set(root, (inboundCount.get(root) || 0) + 1);
+  }
 
-  // Apply morphological centrality boost to headword scores
+  // Apply morphological centrality boost to headword scores (core roots with many inflected forms & compound pointers)
   for (const h of headwordsMap.values()) {
     const inbounds = inboundCount.get(h.word) || 0;
-    h.score += Math.min(inbounds * 40, 1000);
+    h.score += Math.min(inbounds * 150, 6000);
   }
 
   // Balanced Category Quotas to ensure a comprehensive learner dictionary
@@ -429,14 +471,14 @@ export async function buildDictionary(options = {}) {
 
   // 1. 100% of closed class words (~800-1,000 words)
   addCandidates(closedClassCandidates, closedClassCandidates.length);
-  // 2. Top ~9,500 Nouns
-  addCandidates(nounCandidates, 9500);
-  // 3. Top ~3,000 Verbs
-  addCandidates(verbCandidates, 3000);
-  // 4. Top ~1,200 Adjectives
-  addCandidates(adjectiveCandidates, 1200);
-  // 5. Top ~400 Adverbs
-  addCandidates(adverbCandidates, 400);
+  // 2. Top ~9,000 Nouns
+  addCandidates(nounCandidates, 9000);
+  // 3. Top ~3,800 Verbs
+  addCandidates(verbCandidates, 3800);
+  // 4. Top ~1,000 Adjectives
+  addCandidates(adjectiveCandidates, 1000);
+  // 5. Top ~350 Adverbs
+  addCandidates(adverbCandidates, 350);
 
   // Fill remainder up to target limit from remaining best candidates across all pools
   const acceptedSet = new Set(acceptedList.map(h => h.word));

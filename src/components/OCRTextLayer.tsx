@@ -122,7 +122,8 @@ export const OCRTextLayer: React.FC<OCRTextLayerProps> = ({
             transform: `scaleX(${span.scaleX})`,
             transformOrigin: '0 0',
             whiteSpace: 'pre',
-            overflow: 'hidden',
+            userSelect: 'text',
+            WebkitUserSelect: 'text',
           }}
         >
           {span.text}

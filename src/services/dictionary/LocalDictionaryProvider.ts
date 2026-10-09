@@ -64,6 +64,8 @@ export class LocalDictionaryProvider implements DictionaryProvider {
       gender,
       plural,
       senses,
+      isDerived: false,
+      source: 'dictionary',
     };
   }
 
@@ -97,23 +99,19 @@ export class LocalDictionaryProvider implements DictionaryProvider {
     }
 
     // 2. Stage 2 — Case-disambiguated match
-    // If capitalized, try lowercase (sentence-initial verbs, adjectives, etc.)
-    if (query[0] === query[0].toUpperCase() && query.length > 1) {
-      const lower = query.toLowerCase();
-      if (Object.prototype.hasOwnProperty.call(this.entries, lower)) {
-        return this.formatResult(query, this.entries[lower], lower);
-      }
+    const lowerQuery = query.toLowerCase();
+    const titleQuery = lowerQuery[0].toUpperCase() + lowerQuery.slice(1);
+
+    // Try lowercase entry (sentence-initial verbs, adjectives, mixed case)
+    if (query !== lowerQuery && Object.prototype.hasOwnProperty.call(this.entries, lowerQuery)) {
+      return this.formatResult(query, this.entries[lowerQuery], lowerQuery);
     }
-    // If lowercase, try capitalized (nouns typed or scanned in lowercase)
-    if (query[0] === query[0].toLowerCase()) {
-      const capitalized = query[0].toUpperCase() + query.slice(1);
-      if (Object.prototype.hasOwnProperty.call(this.entries, capitalized)) {
-        return this.formatResult(query, this.entries[capitalized], capitalized);
-      }
+    // Try titlecase entry (lowercase or mixed-case nouns like buch/SchUlE -> Buch/Schule)
+    if (query !== titleQuery && Object.prototype.hasOwnProperty.call(this.entries, titleQuery)) {
+      return this.formatResult(query, this.entries[titleQuery], titleQuery);
     }
 
     // 3. Stage 3 — Precompiled inflection index
-    const lowerQuery = query.toLowerCase();
     const mappedLemma = this.inflections[lowerQuery];
     if (mappedLemma) {
       if (Object.prototype.hasOwnProperty.call(this.entries, mappedLemma)) {
@@ -144,6 +142,41 @@ export class LocalDictionaryProvider implements DictionaryProvider {
             return this.formatResult(query, this.entries[stemLemma], stemLemma);
           }
         }
+      }
+    }
+
+    // 5. Stage 5 — Productive learner compound decomposition fallback
+    // e.g., Lieblings- + Noun (Lieblingsmusik -> Liebling + Musik -> "favorite music")
+    // Note: Marked explicitly as source: "compositional" / isDerived: true to distinguish from upstream dictionary entries.
+    if (lowerQuery.startsWith('lieblings') && lowerQuery.length > 9) {
+      const remainder = lowerQuery.slice(9);
+      const capRemainder = remainder[0].toUpperCase() + remainder.slice(1);
+      const baseEntry = this.entries[capRemainder] || this.entries[remainder];
+      if (baseEntry) {
+        const baseResult = this.formatResult(capRemainder, baseEntry);
+        // Only take the safe, primary base noun meaning to avoid spurious idiomatic extensions
+        const primaryBaseMeaning = baseResult.translations[0] || remainder;
+        const compoundTranslation = `favorite ${primaryBaseMeaning}`;
+        return {
+          query,
+          lemma: `Liebling + ${capRemainder}`,
+          sourceLang: 'de',
+          targetLang: 'en',
+          translations: [compoundTranslation],
+          partOfSpeech: 'noun',
+          gender: baseResult.gender,
+          plural: baseResult.plural,
+          isDerived: true,
+          source: 'compositional',
+          senses: [
+            {
+              pos: 'noun',
+              gender: baseResult.gender,
+              plural: baseResult.plural,
+              translations: [compoundTranslation],
+            },
+          ],
+        };
       }
     }
 

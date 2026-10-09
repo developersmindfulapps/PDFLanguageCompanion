@@ -23,6 +23,8 @@ export interface DictionaryResult {
   gender?: 'm' | 'f' | 'n';
   plural?: string;
   senses?: LexicalSense[];
+  isDerived?: boolean;
+  source?: 'dictionary' | 'compositional';
 }
 
 export interface DictionaryEntry {

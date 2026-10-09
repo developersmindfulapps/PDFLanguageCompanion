@@ -55,59 +55,84 @@ export function useWordSelection({
       // 2. Check for drag-highlighted text selection
       if (selection && !selection.isCollapsed && selection.rangeCount > 0) {
         const rawText = selection.toString().trim();
-        if (rawText && isSingleWord(rawText)) {
-          const cleaned = cleanWordToken(rawText);
-          if (cleaned) {
-            try {
-              const range = selection.getRangeAt(0);
+        if (rawText) {
+          try {
+            const range = selection.getRangeAt(0);
 
-              // In selection-only mode (OCR), ensure the selection represents exactly ONE complete OCR word
-              if (mode === 'selection-only') {
-                const startEl = range.startContainer.nodeType === Node.TEXT_NODE
-                  ? range.startContainer.parentElement
-                  : (range.startContainer as HTMLElement);
-                const endEl = range.endContainer.nodeType === Node.TEXT_NODE
-                  ? range.endContainer.parentElement
-                  : (range.endContainer as HTMLElement);
-
-                // Multi-element selection is rejected
-                if (!startEl || startEl !== endEl) {
-                  setSelection(null);
-                  return;
+            // In selection-only mode (OCR), ensure the selection represents exactly ONE complete OCR word
+            if (mode === 'selection-only') {
+              const getOcrWordElement = (node: Node | null): HTMLElement | null => {
+                let curr: Node | null = node;
+                while (curr && curr !== container) {
+                  if (curr.nodeType === Node.ELEMENT_NODE && (curr as HTMLElement).hasAttribute('data-ocr-word')) {
+                    return curr as HTMLElement;
+                  }
+                  curr = curr.parentNode;
                 }
+                return null;
+              };
 
-                // Verify that the selection represents the complete OCR word (reject partial selections)
-                const fullOcrText = startEl.getAttribute('data-ocr-word') || startEl.textContent || '';
-                const fullCleaned = cleanWordToken(fullOcrText);
+              const startEl = getOcrWordElement(range.startContainer);
+              const endEl = getOcrWordElement(range.endContainer);
 
-                if (!fullCleaned || cleaned.toLowerCase() !== fullCleaned.toLowerCase()) {
-                  // User selected only a substring/partial word
-                  setSelection(null);
-                  return;
-                }
+              // Multi-element selection or non-OCR element is rejected (multi-word selection suppression)
+              if (!startEl || !endEl || startEl !== endEl) {
+                setSelection(null);
+                return;
               }
 
-              const rect = range.getBoundingClientRect();
-              const validRect = rect.width > 0 && rect.height > 0;
-              const fallbackRect = range.startContainer.parentElement?.getBoundingClientRect();
-              const finalRect = validRect ? rect : fallbackRect;
+              // Multiword check on the selected text
+              if (!isSingleWord(rawText)) {
+                setSelection(null);
+                return;
+              }
 
-              if (finalRect && finalRect.width > 0 && finalRect.height > 0) {
+              // In OCR mode, verify that the selection represents the COMPLETE word token.
+              // Partial selections inside a word (e.g. "Lieblingsfil" or "film" inside "Lieblingsfilm") are strictly rejected.
+              const fullOcrText = startEl.getAttribute('data-ocr-word') || startEl.textContent || '';
+              const fullCleaned = cleanWordToken(fullOcrText);
+              const selectedCleaned = cleanWordToken(rawText);
+
+              if (!fullCleaned || !selectedCleaned || selectedCleaned.toLowerCase() !== fullCleaned.toLowerCase()) {
+                setSelection(null);
+                return;
+              }
+
+              const spanRect = startEl.getBoundingClientRect();
+              if (spanRect && spanRect.width > 0 && spanRect.height > 0) {
                 setSelection({
-                  word: cleaned,
+                  word: fullCleaned,
                   pageNumber,
-                  rect: finalRect,
+                  rect: spanRect,
                 });
                 return;
               }
-            } catch {
-              // Ignore range rect error
+            } else if (isSingleWord(rawText)) {
+              // Normal text-PDF selection mode
+              const cleaned = cleanWordToken(rawText);
+              if (cleaned) {
+                const rect = range.getBoundingClientRect();
+                const validRect = rect.width > 0 && rect.height > 0;
+                const fallbackRect = range.startContainer.parentElement?.getBoundingClientRect();
+                const finalRect = validRect ? rect : fallbackRect;
+
+                if (finalRect && finalRect.width > 0 && finalRect.height > 0) {
+                  setSelection({
+                    word: cleaned,
+                    pageNumber,
+                    rect: finalRect,
+                  });
+                  return;
+                }
+              }
+            } else {
+              // Normal PDF multi-word selection: do not treat as single word
+              setSelection(null);
+              return;
             }
+          } catch {
+            // Ignore range rect error
           }
-        } else if (rawText && !isSingleWord(rawText)) {
-          // Multi-word selection: do not treat as single word
-          setSelection(null);
-          return;
         }
       }
 
