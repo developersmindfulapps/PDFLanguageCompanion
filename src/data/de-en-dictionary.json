@@ -7508,6 +7508,25 @@
       }
     ]
   },
+  "am": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "at the",
+          "on the"
+        ]
+      },
+      {
+        "pos": "part",
+        "translations": [
+          "Precedes the superlative in adverbial and predicate use.",
+          "form the progressive aspect of verbs",
+          "especially intransitive ones."
+        ]
+      }
+    ]
+  },
   "am Arsch": {
     "senses": [
       {
@@ -10224,6 +10243,16 @@
           "to mix together",
           "to whisk together",
           "to bloom"
+        ]
+      }
+    ]
+  },
+  "ans": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "onto the"
         ]
       }
     ]
@@ -14706,6 +14735,17 @@
       }
     ]
   },
+  "aufm": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "auf + dem",
+          "auf + einem"
+        ]
+      }
+    ]
+  },
   "aufmachen": {
     "senses": [
       {
@@ -14738,6 +14778,17 @@
         "pos": "verb",
         "translations": [
           "to cheer up"
+        ]
+      }
+    ]
+  },
+  "aufn": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "auf + den",
+          "auf + ein"
         ]
       }
     ]
@@ -15018,6 +15069,18 @@
         "translations": [
           "to increase armament",
           "to upgrade"
+        ]
+      }
+    ]
+  },
+  "aufs": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "on the",
+          "upon the",
+          "onto the"
         ]
       }
     ]
@@ -17140,6 +17203,17 @@
           "to measure vertical height",
           "to comprehend something",
           "to investigate something"
+        ]
+      }
+    ]
+  },
+  "ausm": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "aus + dem",
+          "aus + einem"
         ]
       }
     ]
@@ -23403,6 +23477,17 @@
       }
     ]
   },
+  "beim": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "at the",
+          "by the"
+        ]
+      }
+    ]
+  },
   "beimessen": {
     "senses": [
       {
@@ -28266,6 +28351,16 @@
       }
     ]
   },
+  "bins": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of bin + es"
+        ]
+      }
+    ]
+  },
   "Binse": {
     "senses": [
       {
@@ -28594,6 +28689,26 @@
         "translations": [
           "bit",
           "little"
+        ]
+      }
+    ]
+  },
+  "biste": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of bist + du"
+        ]
+      }
+    ]
+  },
+  "bists": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of bist + es"
         ]
       }
     ]
@@ -35755,6 +35870,16 @@
       }
     ]
   },
+  "darfs": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of darf + es"
+        ]
+      }
+    ]
+  },
   "darin": {
     "senses": [
       {
@@ -36832,6 +36957,25 @@
       }
     ]
   },
+  "denkste": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of denkst du"
+        ]
+      },
+      {
+        "pos": "interj",
+        "translations": [
+          "Emphasizes that something is not",
+          "or has not turned out",
+          "as one would have expected",
+          "often expressing irritation at this and/or characterizing the expectation as naive."
+        ]
+      }
+    ]
+  },
   "Denkverbot": {
     "senses": [
       {
@@ -37544,6 +37688,16 @@
       }
     ]
   },
+  "dichs": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of dich + es"
+        ]
+      }
+    ]
+  },
   "dicht": {
     "senses": [
       {
@@ -38089,6 +38243,16 @@
         ],
         "gender": "f",
         "plural": "Dirnen"
+      }
+    ]
+  },
+  "dirs": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of dir + es"
+        ]
       }
     ]
   },
@@ -38647,6 +38811,16 @@
           "gosh!",
           "expresses great surprise",
           "often impression"
+        ]
+      }
+    ]
+  },
+  "donnich": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of doch + nicht"
         ]
       }
     ]
@@ -41114,6 +41288,16 @@
       }
     ]
   },
+  "durchs": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "through the"
+        ]
+      }
+    ]
+  },
   "durchsagen": {
     "senses": [
       {
@@ -41336,6 +41520,16 @@
         ],
         "gender": "m",
         "plural": "Dürüm"
+      }
+    ]
+  },
+  "dus": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of du + es"
+        ]
       }
     ]
   },
@@ -43075,6 +43269,16 @@
         ],
         "gender": "m",
         "plural": "Eilzüge"
+      }
+    ]
+  },
+  "eim": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of einem"
+        ]
       }
     ]
   },
@@ -62118,6 +62322,16 @@
       }
     ]
   },
+  "fürn": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "for the"
+        ]
+      }
+    ]
+  },
   "Furnier": {
     "senses": [
       {
@@ -62127,6 +62341,16 @@
         ],
         "gender": "n",
         "plural": "Furniere"
+      }
+    ]
+  },
+  "fürs": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "for the"
+        ]
       }
     ]
   },
@@ -62460,6 +62684,16 @@
         ],
         "gender": "m",
         "plural": "Fuzzis"
+      }
+    ]
+  },
+  "gab's": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "gab es."
+        ]
       }
     ]
   },
@@ -64748,6 +64982,26 @@
         ],
         "gender": "m",
         "plural": "Gehsteige"
+      }
+    ]
+  },
+  "geht's": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of geht es"
+        ]
+      }
+    ]
+  },
+  "gehts": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "alternative spelling of geht's"
+        ]
       }
     ]
   },
@@ -68161,6 +68415,16 @@
       }
     ]
   },
+  "gibt's": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of gibt + es"
+        ]
+      }
+    ]
+  },
   "Giebeldach": {
     "senses": [
       {
@@ -68290,6 +68554,16 @@
         ],
         "gender": "f",
         "plural": "Gilden"
+      }
+    ]
+  },
+  "gings": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of ging + es"
+        ]
       }
     ]
   },
@@ -72015,6 +72289,16 @@
       }
     ]
   },
+  "hab's": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "habe es."
+        ]
+      }
+    ]
+  },
   "habe die Ehre": {
     "senses": [
       {
@@ -72050,6 +72334,16 @@
         ],
         "gender": "m",
         "plural": "Habenichtse"
+      }
+    ]
+  },
+  "habens": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of haben + es"
+        ]
       }
     ]
   },
@@ -72109,6 +72403,26 @@
         ],
         "gender": "n",
         "plural": "Habitate"
+      }
+    ]
+  },
+  "habs": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "alternative spelling of hab's"
+        ]
+      }
+    ]
+  },
+  "habts": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of habt + es"
+        ]
       }
     ]
   },
@@ -74004,6 +74318,16 @@
       }
     ]
   },
+  "haste": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of hast + du"
+        ]
+      }
+    ]
+  },
   "haste nicht gesehen": {
     "senses": [
       {
@@ -74041,6 +74365,36 @@
         "pos": "pron",
         "translations": [
           "alternative spelling of haste nicht gesehen"
+        ]
+      }
+    ]
+  },
+  "hasts": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of hast + es"
+        ]
+      }
+    ]
+  },
+  "hastu": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of hast + du"
+        ]
+      }
+    ]
+  },
+  "hat's": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of hat + es"
         ]
       }
     ]
@@ -79610,6 +79964,16 @@
       }
     ]
   },
+  "hinterm": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "behind the"
+        ]
+      }
+    ]
+  },
   "Hintermann": {
     "senses": [
       {
@@ -79631,6 +79995,16 @@
       }
     ]
   },
+  "hintern": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "behind the"
+        ]
+      }
+    ]
+  },
   "Hinterrad": {
     "senses": [
       {
@@ -79641,6 +80015,17 @@
         ],
         "gender": "n",
         "plural": "Hinterräder"
+      }
+    ]
+  },
+  "hinters": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "behind the",
+          "to the rear of the"
+        ]
       }
     ]
   },
@@ -82405,6 +82790,16 @@
       }
     ]
   },
+  "ichs": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of ich + es"
+        ]
+      }
+    ]
+  },
   "icke": {
     "senses": [
       {
@@ -82649,6 +83044,16 @@
       }
     ]
   },
+  "ihrs": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of ihr + es"
+        ]
+      }
+    ]
+  },
   "ihrzen": {
     "senses": [
       {
@@ -82692,6 +83097,16 @@
         ],
         "gender": "m",
         "plural": "Iltisse"
+      }
+    ]
+  },
+  "im": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "in the"
+        ]
       }
     ]
   },
@@ -82976,7 +83391,8 @@
       {
         "pos": "prep+art",
         "translations": [
-          "contraction of in + den"
+          "into the",
+          "in the"
         ]
       },
       {
@@ -83709,6 +84125,17 @@
       }
     ]
   },
+  "ins": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "into the",
+          "in the"
+        ]
+      }
+    ]
+  },
   "Insasse": {
     "senses": [
       {
@@ -84400,12 +84827,32 @@
       }
     ]
   },
+  "isses": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of ist + es"
+        ]
+      }
+    ]
+  },
   "isso": {
     "senses": [
       {
         "pos": "interj",
         "translations": [
           "pronunciation spelling of ist so"
+        ]
+      }
+    ]
+  },
+  "ists": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of ist + es"
         ]
       }
     ]
@@ -86881,6 +87328,16 @@
         ],
         "gender": "n",
         "plural": "Kannkinder"
+      }
+    ]
+  },
+  "kanns": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of kann + es"
+        ]
       }
     ]
   },
@@ -92602,6 +93059,16 @@
           "comic",
           "pertaining to comedy",
           "funny"
+        ]
+      }
+    ]
+  },
+  "komma": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of komm + mal"
         ]
       }
     ]
@@ -103789,6 +104256,16 @@
       }
     ]
   },
+  "mags": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of mag + es"
+        ]
+      }
+    ]
+  },
   "mäh": {
     "senses": [
       {
@@ -107592,6 +108069,16 @@
       }
     ]
   },
+  "mim": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of mit + dem"
+        ]
+      }
+    ]
+  },
   "Mime": {
     "senses": [
       {
@@ -107871,6 +108358,16 @@
         ],
         "gender": "f",
         "plural": "Minzen"
+      }
+    ]
+  },
+  "mirs": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of mir + es"
+        ]
       }
     ]
   },
@@ -108836,6 +109333,16 @@
         "pos": "verb",
         "translations": [
           "to furnish"
+        ]
+      }
+    ]
+  },
+  "möchts": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of möchte + es"
         ]
       }
     ]
@@ -116685,6 +117192,18 @@
       }
     ]
   },
+  "ob's": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of ob + es: whether it",
+          "whether't",
+          "if it"
+        ]
+      }
+    ]
+  },
   "Obacht": {
     "senses": [
       {
@@ -116970,6 +117489,16 @@
         ],
         "gender": "m",
         "plural": "Obolen"
+      }
+    ]
+  },
+  "obs": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "alternative spelling of ob's"
+        ]
       }
     ]
   },
@@ -133619,6 +134148,26 @@
       }
     ]
   },
+  "sags": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of sage + es or sag + es"
+        ]
+      }
+    ]
+  },
+  "sagts": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of sagt + es"
+        ]
+      }
+    ]
+  },
   "Sahne": {
     "senses": [
       {
@@ -134026,6 +134575,16 @@
         ],
         "gender": "m",
         "plural": "Sämlinge"
+      }
+    ]
+  },
+  "samma": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of sag + mal"
+        ]
       }
     ]
   },
@@ -142462,6 +143021,16 @@
       }
     ]
   },
+  "seids": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of seid + es"
+        ]
+      }
+    ]
+  },
   "Seife": {
     "senses": [
       {
@@ -143612,6 +144181,16 @@
       }
     ]
   },
+  "sichs": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of sich + es"
+        ]
+      }
+    ]
+  },
   "Sicht": {
     "senses": [
       {
@@ -144112,6 +144691,23 @@
       }
     ]
   },
+  "siehste": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of siehst + du"
+        ]
+      },
+      {
+        "pos": "interj",
+        "translations": [
+          "you see?",
+          "didn't I tell you so?"
+        ]
+      }
+    ]
+  },
   "Siel": {
     "senses": [
       {
@@ -144122,6 +144718,16 @@
         ],
         "gender": "m",
         "plural": "Siele"
+      }
+    ]
+  },
+  "sies": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of sie + es"
+        ]
       }
     ]
   },
@@ -144330,6 +144936,16 @@
         ],
         "gender": "m",
         "plural": "Simulanten"
+      }
+    ]
+  },
+  "sinds": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of sind + es"
+        ]
       }
     ]
   },
@@ -145425,6 +146041,16 @@
           "to be obligated",
           "ought",
           "shall"
+        ]
+      }
+    ]
+  },
+  "solls": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of soll + es"
         ]
       }
     ]
@@ -162138,6 +162764,17 @@
       }
     ]
   },
+  "überm": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "over the",
+          "above the"
+        ]
+      }
+    ]
+  },
   "Übermensch": {
     "senses": [
       {
@@ -162157,6 +162794,17 @@
         "translations": [
           "overmorrow",
           "the day after tomorrow"
+        ]
+      }
+    ]
+  },
+  "übern": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "over the",
+          "above the"
         ]
       }
     ]
@@ -162313,6 +162961,17 @@
           "to lap",
           "to exceed by a large margin",
           "to have an uncatchable lead over"
+        ]
+      }
+    ]
+  },
+  "übers": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "over the",
+          "above the"
         ]
       }
     ]
@@ -163742,6 +164401,16 @@
         "translations": [
           "to retool",
           "to retrofit"
+        ]
+      }
+    ]
+  },
+  "ums": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "around the"
         ]
       }
     ]
@@ -165342,6 +166011,16 @@
       }
     ]
   },
+  "unterm": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "under the"
+        ]
+      }
+    ]
+  },
   "untermauern": {
     "senses": [
       {
@@ -165365,6 +166044,16 @@
         ],
         "gender": "m",
         "plural": "Untermenschen"
+      }
+    ]
+  },
+  "untern": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "under the"
+        ]
       }
     ]
   },
@@ -165458,6 +166147,16 @@
         ],
         "gender": "m",
         "plural": "Unterrichte"
+      }
+    ]
+  },
+  "unters": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "under the"
+        ]
       }
     ]
   },
@@ -171752,6 +172451,25 @@
       }
     ]
   },
+  "verstehste": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of verstehst + du"
+        ]
+      },
+      {
+        "pos": "interj",
+        "translations": [
+          "do you understand?",
+          "capisce?",
+          "you know?",
+          "right?"
+        ]
+      }
+    ]
+  },
   "versteigern": {
     "senses": [
       {
@@ -174449,6 +175167,17 @@
       }
     ]
   },
+  "vom": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "from the",
+          "of the"
+        ]
+      }
+    ]
+  },
   "von": {
     "senses": [
       {
@@ -176054,6 +176783,16 @@
       }
     ]
   },
+  "vorm": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "Contraction of vor and dem."
+        ]
+      }
+    ]
+  },
   "vormachen": {
     "senses": [
       {
@@ -176174,7 +176913,8 @@
       {
         "pos": "prep+art",
         "translations": [
-          "contraction of vor + den"
+          "in front of the",
+          "before the"
         ]
       }
     ]
@@ -176362,6 +177102,17 @@
         ],
         "gender": "f",
         "plural": "Vorrunden"
+      }
+    ]
+  },
+  "vors": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "in front of the",
+          "before the"
+        ]
       }
     ]
   },
@@ -178795,6 +179546,26 @@
       }
     ]
   },
+  "war's": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "alternative spelling of wars"
+        ]
+      }
+    ]
+  },
+  "wär's": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of wäre + es"
+        ]
+      }
+    ]
+  },
   "Waran": {
     "senses": [
       {
@@ -178831,6 +179602,16 @@
         ],
         "gender": "n",
         "plural": "Warenhäuser"
+      }
+    ]
+  },
+  "warens": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of waren + es"
+        ]
       }
     ]
   },
@@ -178967,6 +179748,16 @@
         ],
         "gender": "f",
         "plural": "Warnungen"
+      }
+    ]
+  },
+  "wars": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of war + es"
+        ]
       }
     ]
   },
@@ -181152,6 +181943,17 @@
       }
     ]
   },
+  "weißte": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "y'know",
+          "contraction of weißt du"
+        ]
+      }
+    ]
+  },
   "Weißwasser": {
     "senses": [
       {
@@ -181877,6 +182679,16 @@
       }
     ]
   },
+  "wenns": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of wenn + es"
+        ]
+      }
+    ]
+  },
   "wennschon": {
     "senses": [
       {
@@ -182102,6 +182914,16 @@
         ],
         "gender": "n",
         "plural": "Werkzeuge"
+      }
+    ]
+  },
+  "wers": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of wer + es"
+        ]
       }
     ]
   },
@@ -183296,6 +184118,16 @@
       }
     ]
   },
+  "wills": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of will + es"
+        ]
+      }
+    ]
+  },
   "Wimmelbild": {
     "senses": [
       {
@@ -183847,6 +184679,16 @@
       }
     ]
   },
+  "wirds": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of wird + es"
+        ]
+      }
+    ]
+  },
   "wirken": {
     "senses": [
       {
@@ -183937,6 +184779,16 @@
         ],
         "gender": "f",
         "plural": "Wirrsale"
+      }
+    ]
+  },
+  "wirs": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "contraction of wir + es"
+        ]
       }
     ]
   },
@@ -189992,6 +190844,19 @@
       }
     ]
   },
+  "zum": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "to the",
+          "for the",
+          "to a",
+          "for a"
+        ]
+      }
+    ]
+  },
   "zum Wohl": {
     "senses": [
       {
@@ -190212,6 +191077,16 @@
       }
     ]
   },
+  "zur": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "to the"
+        ]
+      }
+    ]
+  },
   "zur Zeit": {
     "senses": [
       {
@@ -190333,6 +191208,16 @@
         "pos": "verb",
         "translations": [
           "to call"
+        ]
+      }
+    ]
+  },
+  "zus.": {
+    "senses": [
+      {
+        "pos": "prep+art",
+        "translations": [
+          "Contraction of zusätzlich"
         ]
       }
     ]

@@ -5,6 +5,7 @@ import {
   ZoomIn,
   ZoomOut,
   Maximize2,
+  RotateCcw,
 } from 'lucide-react';
 import type { ZoomState } from '../types/pdf';
 
@@ -67,8 +68,14 @@ export const PDFControls: React.FC<PDFControlsProps> = ({
     onZoomChange({ scale: prevScale, mode: 'custom' });
   };
 
-  const handleFitWidth = () => {
-    onZoomChange({ scale: zoom.scale, mode: 'fit-width' });
+  const handleToggleFitWidth = () => {
+    if (zoom.mode === 'fit-width') {
+      // Exit Fit Width mode -> Reset to exactly 100%
+      onZoomChange({ scale: 1.0, mode: 'custom' });
+    } else {
+      // Enter Fit Width mode
+      onZoomChange({ scale: zoom.scale, mode: 'fit-width' });
+    }
   };
 
   return (
@@ -135,16 +142,25 @@ export const PDFControls: React.FC<PDFControlsProps> = ({
         <div className="h-4 w-px bg-slate-200 mx-1 hidden sm:block" />
 
         <button
-          onClick={handleFitWidth}
+          onClick={handleToggleFitWidth}
           className={`px-2.5 py-1 text-xs font-medium rounded-md transition-colors flex items-center gap-1.5 ${
             zoom.mode === 'fit-width'
-              ? 'bg-indigo-50 text-indigo-700 border border-indigo-200'
+              ? 'bg-indigo-50 text-indigo-700 border border-indigo-200 hover:bg-indigo-100'
               : 'text-slate-700 hover:bg-slate-100 border border-transparent'
           }`}
-          title="Fit to Width"
+          title={zoom.mode === 'fit-width' ? 'Reset zoom to 100%' : 'Fit to Width'}
         >
-          <Maximize2 className="w-3.5 h-3.5" />
-          <span className="hidden sm:inline">Fit Width</span>
+          {zoom.mode === 'fit-width' ? (
+            <>
+              <RotateCcw className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Reset</span>
+            </>
+          ) : (
+            <>
+              <Maximize2 className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Fit Width</span>
+            </>
+          )}
         </button>
       </div>
     </div>

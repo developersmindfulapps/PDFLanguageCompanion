@@ -4,6 +4,91 @@ import zlib from 'node:zlib';
 import readline from 'node:readline';
 import { SOURCE_CONFIG, computeFileSha256 } from './fetch-dictionary-source.mjs';
 
+export function cleanContractionGloss(rawGloss) {
+  if (!rawGloss || typeof rawGloss !== 'string') return [];
+  let text = rawGloss.trim();
+
+  // Replace unicode quotes with standard ascii quotes
+  let cleaned = text.replace(/[“”]/g, '"');
+
+  // 1. Check for explicit translation in literal quote: e.g. literally "to the; for the"
+  const literalMatch = cleaned.match(/literally\s+"([^"]+)"/i);
+  if (literalMatch) {
+    const parts = literalMatch[1].split(/[;,]\s*/).map(s => s.replace(/\s*\([^)]*\)\s*/g, '').trim()).filter(Boolean);
+    if (parts.length > 0) return parts;
+  }
+
+  // 2. Check for explicit trailing translations after bracket / semicolon / colon
+  // e.g. "... [with accusative] on the, upon the, onto the"
+  // e.g. "contraction of in + dem; in the"
+  // e.g. "contraction of bei + dem: at the, by the, etc."
+  const trailingMatch = cleaned.match(/(?:;\s*|:\s*|\]\s*)([a-z\s,]+)$/i);
+  if (trailingMatch) {
+    const parts = trailingMatch[1]
+      .split(/,\s*/)
+      .map(s => s.replace(/\betc\.?\b/gi, '').replace(/\s*\([^)]*\)\s*/g, '').trim())
+      .filter(s => s.length >= 2);
+    if (parts.length > 0) return parts;
+  }
+
+  // 3. Extract component meanings from ("...") quotes: e.g. contraction of in ("(in)to") + das ("the")
+  const compMatch = cleaned.match(/contraction of\s+([^\s"(]+)\s*(?:\("([^"]+)"\))?\s*\+\s*([^\s"(]+)\s*(?:\("([^"]+)"\))?/i);
+  if (compMatch) {
+    const p1MeaningsRaw = compMatch[2]; // e.g. "(in)to" or "at/on"
+    const p2MeaningsRaw = compMatch[4]; // e.g. "the"
+
+    let p1Meanings = [];
+    if (p1MeaningsRaw) {
+      p1Meanings = p1MeaningsRaw
+        .replace(/\(in\)to/gi, 'into, in')
+        .replace(/[()]/g, '')
+        .split(/[\/,]\s*/)
+        .map(s => s.trim())
+        .filter(Boolean);
+    }
+
+    let p2Meaning = 'the';
+    if (p2MeaningsRaw) {
+      p2Meaning = p2MeaningsRaw.split(/[,;]/)[0].replace(/[()]/g, '').trim();
+    }
+
+    if (p1Meanings.length > 0) {
+      const res = [];
+      for (const m of p1Meanings) {
+        const combined = `${m} ${p2Meaning}`.trim();
+        if (!res.includes(combined)) res.push(combined);
+      }
+      if (res.length > 0) return res;
+    }
+  }
+
+  // 4. Pattern: contraction of X + Y fallback
+  const simpleComp = cleaned.match(/contraction of\s+([a-zäöüß]+)\s*\+\s*([a-zäöüß]+)/i);
+  if (simpleComp) {
+    const prep = simpleComp[1].toLowerCase();
+    const prepMap = {
+      in: ['into the', 'in the'],
+      an: ['at the', 'to the', 'on the'],
+      zu: ['to the', 'for the'],
+      von: ['from the', 'of the'],
+      bei: ['at the', 'by the'],
+      auf: ['onto the', 'on the'],
+      für: ['for the'],
+      um: ['around the'],
+      durch: ['through the'],
+      hinter: ['behind the'],
+      unter: ['under the'],
+      über: ['over the', 'above the'],
+      vor: ['in front of the', 'before the']
+    };
+    if (prepMap[prep]) {
+      return prepMap[prep];
+    }
+  }
+
+  return [];
+}
+
 /**
  * Clean and normalize English glosses from Wiktionary into concise, learner-friendly translations.
  */
@@ -11,6 +96,12 @@ export function cleanGloss(rawGloss) {
   if (!rawGloss || typeof rawGloss !== 'string') return [];
 
   let text = rawGloss.trim();
+
+  // If this is a contraction gloss, extract the English prepositional phrase
+  if (/^contraction of /i.test(text)) {
+    const cMeanings = cleanContractionGloss(text);
+    if (cMeanings.length > 0) return cMeanings;
+  }
 
   // Strip Wiktionary formatting headers / notes
   text = text.replace(/^As (?:an? )?(?:intransitive|transitive|copulative|reflexive|auxiliary) verb:\s*/i, '');
@@ -290,7 +381,7 @@ export async function buildDictionary(options = {}) {
     // Quality / Importance Score Calculation
     let score = 100;
     // 1. Closed grammatical classes get absolute maximum priority
-    if (['pron', 'det', 'prep', 'conj', 'art', 'num', 'interj', 'part'].includes(pos)) {
+    if (['pron', 'det', 'prep', 'conj', 'art', 'num', 'interj', 'part', 'prep+art'].includes(pos)) {
       score += 50000;
     } else if (pos === 'verb') {
       score += 8000;
@@ -431,7 +522,7 @@ export async function buildDictionary(options = {}) {
 
   for (const h of headwordsMap.values()) {
     const p = h.primaryPos;
-    if (['pron', 'det', 'prep', 'conj', 'art', 'num', 'interj', 'part'].includes(p)) {
+    if (['pron', 'det', 'prep', 'conj', 'art', 'num', 'interj', 'part', 'prep+art'].includes(p)) {
       closedClassCandidates.push(h);
     } else if (p === 'adj') {
       adjectiveCandidates.push(h);
