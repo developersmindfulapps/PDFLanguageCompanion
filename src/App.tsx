@@ -10,6 +10,7 @@ import { PDFViewer } from './components/PDFViewer';
 import { PDFControls } from './components/PDFControls';
 import { LoadingSpinner } from './components/LoadingSpinner';
 import { ErrorMessage } from './components/ErrorMessage';
+import { AboutModal } from './components/AboutModal';
 
 export const App: React.FC = () => {
   const [doc, setDoc] = useState<PDFDocumentProxy | null>(null);
@@ -20,6 +21,7 @@ export const App: React.FC = () => {
   const [isLoadingPage, setIsLoadingPage] = useState<boolean>(false);
   const [error, setError] = useState<PDFLoadError | null>(null);
   const [lastSelectedFile, setLastSelectedFile] = useState<File | null>(null);
+  const [isAboutOpen, setIsAboutOpen] = useState<boolean>(false);
 
   const {
     currentOCRResult,
@@ -34,6 +36,8 @@ export const App: React.FC = () => {
   const {
     activeSelection,
     dictionaryResult,
+    isLoading: isDictionaryLoading,
+    error: dictionaryError,
     handleWordSelected,
     closeTooltip,
   } = useDictionaryTooltip();
@@ -100,7 +104,11 @@ export const App: React.FC = () => {
 
   return (
     <div className="h-full flex flex-col bg-slate-100 overflow-hidden font-sans">
-      <Navbar documentInfo={docInfo} onOpenNewFile={handleReset} />
+      <Navbar
+        documentInfo={docInfo}
+        onOpenNewFile={handleReset}
+        onOpenAbout={() => setIsAboutOpen(true)}
+      />
 
       <main className="flex-1 flex flex-col overflow-hidden relative">
         {isLoadingDoc ? (
@@ -149,11 +157,19 @@ export const App: React.FC = () => {
             <DictionaryTooltip
               wordSelection={activeSelection}
               result={dictionaryResult}
+              isLoading={isDictionaryLoading}
+              error={dictionaryError}
               onClose={closeTooltip}
             />
           </>
         )}
       </main>
+
+      {/* Pre-release About & Licenses Modal */}
+      <AboutModal
+        isOpen={isAboutOpen}
+        onClose={() => setIsAboutOpen(false)}
+      />
     </div>
   );
 };

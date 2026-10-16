@@ -16,12 +16,16 @@ import type { DictionaryResult } from '../../types/dictionary';
 interface DictionaryTooltipProps {
   wordSelection: WordSelection | null;
   result: DictionaryResult | null;
+  isLoading?: boolean;
+  error?: Error | null;
   onClose: () => void;
 }
 
 export const DictionaryTooltip: React.FC<DictionaryTooltipProps> = ({
   wordSelection,
   result,
+  isLoading = false,
+  error = null,
   onClose,
 }) => {
   // Virtual element based on the selected word's DOM bounding rect
@@ -95,16 +99,28 @@ export const DictionaryTooltip: React.FC<DictionaryTooltipProps> = ({
             )}
           </div>
 
-          {result?.partOfSpeech && (
+          {result?.partOfSpeech && !isLoading && !error && (
             <span className="text-[10px] font-semibold uppercase tracking-wider text-indigo-700 bg-indigo-50 border border-indigo-100 px-1.5 py-0.5 rounded shrink-0">
               {result.partOfSpeech}
             </span>
           )}
         </div>
 
-        {/* Body: Translation list or Not Found state */}
+        {/* Body: Loading, Error, Translation list, or Word Not Found */}
         <div className="pt-2">
-          {result && result.translations.length > 0 ? (
+          {isLoading ? (
+            <div className="py-1 flex items-center gap-2 text-slate-500">
+              <div className="w-3.5 h-3.5 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin shrink-0" />
+              <span className="text-xs font-medium text-slate-600">Looking up translation...</span>
+            </div>
+          ) : error ? (
+            <div className="py-0.5">
+              <p className="text-xs font-semibold text-rose-600 mb-0.5">Dictionary unavailable</p>
+              <p className="text-xs text-slate-500 leading-snug">
+                Failed to load offline dictionary data. PDF viewing is unaffected.
+              </p>
+            </div>
+          ) : result && result.translations.length > 0 ? (
             <div className="space-y-1">
               {result.translations.length === 1 ? (
                 <p className="text-sm font-semibold text-slate-800 leading-snug">

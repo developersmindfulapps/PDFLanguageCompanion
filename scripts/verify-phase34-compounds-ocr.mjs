@@ -401,7 +401,7 @@ async function verifyPhase34() {
   // -------------------------------------------------------------
   console.log('[Test 5] Offline & Dataset Metadata Audit:');
 
-  const metaPath = path.resolve(process.cwd(), 'src', 'data', 'de-en-metadata.json');
+  const metaPath = path.resolve(process.cwd(), 'public', 'data', 'de-en-metadata.json');
   const metadata = JSON.parse(fs.readFileSync(metaPath, 'utf-8'));
 
   if (metadata.sourceSha256 !== 'ff03802fa4d034a80c03fd72a78243834cc06e69d7031c7be9d745a02c78b34e') {

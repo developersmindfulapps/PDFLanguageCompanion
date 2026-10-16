@@ -4,7 +4,10 @@ import type {
   HeadwordEntry,
   LexicalSense,
 } from '../../types/dictionary.ts';
-import { deEnDictionary, deEnInflections } from '../../data/deEnDictionary.ts';
+import {
+  loadDictionaryAssets,
+  type LoadedDictionaryData
+} from './deEnDataLoader.ts';
 
 /**
  * Common German inflectional suffixes for rule-based adjective/participle fallback.
@@ -24,13 +27,65 @@ export class LocalDictionaryProvider implements DictionaryProvider {
 
   private entries: Record<string, HeadwordEntry>;
   private inflections: Record<string, string>;
+  private initPromise: Promise<void> | null = null;
+  private isReady = false;
+  private initError: Error | null = null;
+  private loader: () => Promise<LoadedDictionaryData>;
 
   constructor(
     customEntries?: Record<string, HeadwordEntry>,
-    customInflections?: Record<string, string>
+    customInflections?: Record<string, string>,
+    loader: () => Promise<LoadedDictionaryData> = loadDictionaryAssets
   ) {
-    this.entries = customEntries || deEnDictionary;
-    this.inflections = customInflections || deEnInflections;
+    this.loader = loader;
+    if (customEntries && customInflections) {
+      this.entries = customEntries;
+      this.inflections = customInflections;
+      this.isReady = true;
+    } else {
+      this.entries = customEntries || {};
+      this.inflections = customInflections || {};
+      this.isReady = Boolean(customEntries && customInflections);
+    }
+  }
+
+  /**
+   * Returns true if the dictionary and inflection datasets are fully loaded into memory.
+   */
+  public isInitialized(): boolean {
+    return this.isReady;
+  }
+
+  /**
+   * Returns the error encountered during asset loading, if any.
+   */
+  public getInitializationError(): Error | null {
+    return this.initError;
+  }
+
+  /**
+   * Ensures that the dictionary datasets are loaded and validated asynchronously.
+   * Uses a singleton promise to deduplicate concurrent requests.
+   */
+  public async ensureInitialized(): Promise<void> {
+    if (this.isReady) return;
+    if (this.initPromise) return this.initPromise;
+
+    this.initPromise = (async () => {
+      try {
+        const { entries, inflections } = await this.loader();
+        this.entries = entries;
+        this.inflections = inflections;
+        this.isReady = true;
+        this.initError = null;
+      } catch (err) {
+        this.initPromise = null; // Clear so subsequent lookups can retry
+        this.initError = err instanceof Error ? err : new Error(String(err));
+        throw this.initError;
+      }
+    })();
+
+    return this.initPromise;
   }
 
   /**
@@ -92,6 +147,11 @@ export class LocalDictionaryProvider implements DictionaryProvider {
 
     const query = word.trim();
     if (!query) return null;
+
+    // Ensure assets are loaded before querying
+    if (!this.isReady) {
+      await this.ensureInitialized();
+    }
 
     // 1. Stage 1 — Exact case-sensitive match
     if (Object.prototype.hasOwnProperty.call(this.entries, query)) {

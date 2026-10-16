@@ -660,7 +660,7 @@ export async function buildDictionary(options = {}) {
     attribution: 'Derived from Wiktionary data via Kaikki.org (Wiktextract by Tatu Ylonen)'
   };
 
-  const dataDir = path.resolve(process.cwd(), 'src', 'data');
+  const dataDir = path.resolve(process.cwd(), 'public', 'data');
   if (!fs.existsSync(dataDir)) {
     fs.mkdirSync(dataDir, { recursive: true });
   }

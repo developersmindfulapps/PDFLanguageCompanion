@@ -7,30 +7,43 @@ export function useDictionaryTooltip() {
   const [activeSelection, setActiveSelection] = useState<WordSelection | null>(null);
   const [dictionaryResult, setDictionaryResult] = useState<DictionaryResult | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<Error | null>(null);
   const lookupIdRef = useRef<number>(0);
+
+  // Proactive background preload on mount (non-blocking, completely offline)
+  useEffect(() => {
+    localDictionaryProvider.ensureInitialized().catch((err) => {
+      // Non-fatal background preload failure — lookup() will retry on demand
+      console.warn('Background dictionary preload deferred:', err);
+    });
+  }, []);
 
   const handleWordSelected = useCallback(async (selection: WordSelection | null) => {
     setActiveSelection(selection);
 
     if (!selection) {
       setDictionaryResult(null);
+      setError(null);
       setIsLoading(false);
       return;
     }
 
     const currentId = ++lookupIdRef.current;
     setIsLoading(true);
+    setError(null);
 
     try {
       const result = await localDictionaryProvider.lookup(selection.word, 'de', 'en');
       // Prevent stale async response race conditions
       if (lookupIdRef.current === currentId) {
         setDictionaryResult(result);
+        setError(null);
       }
     } catch (err) {
       if (lookupIdRef.current === currentId) {
         console.error('Dictionary lookup error:', err);
         setDictionaryResult(null);
+        setError(err instanceof Error ? err : new Error(String(err)));
       }
     } finally {
       if (lookupIdRef.current === currentId) {
@@ -43,6 +56,7 @@ export function useDictionaryTooltip() {
     lookupIdRef.current++;
     setActiveSelection(null);
     setDictionaryResult(null);
+    setError(null);
     setIsLoading(false);
   }, []);
 
@@ -61,6 +75,7 @@ export function useDictionaryTooltip() {
     activeSelection,
     dictionaryResult,
     isLoading,
+    error,
     handleWordSelected,
     closeTooltip,
   };

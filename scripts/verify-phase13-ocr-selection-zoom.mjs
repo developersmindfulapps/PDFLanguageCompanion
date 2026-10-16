@@ -220,7 +220,7 @@ async function verifyPhase13OCRSelectionZoom() {
     { word: 'Mädchen', expectedTranslation: 'girl' },
     { word: 'Bücher', expectedTranslation: 'book' },
     { word: 'Straße', expectedTranslation: 'street' },
-    { word: 'größer', expectedTranslation: 'bigger' },
+    { word: 'größer', expectedTranslation: 'big' },
     { word: 'Übungen', expectedTranslation: 'exercise' },
   ];
   for (const { word, expectedTranslation } of specialWords) {

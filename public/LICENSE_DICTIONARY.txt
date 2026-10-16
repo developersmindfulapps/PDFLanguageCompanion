@@ -1,6 +1,7 @@
 DICTIONARY DATA LICENSE & ATTRIBUTION
 
-This dictionary dataset (src/data/de-en-dictionary.json and src/data/de-en-inflections.json)
+This dictionary dataset (bundled as German-English lexical data within the extension;
+source dataset in repository: public/data/de-en-dictionary.json and public/data/de-en-inflections.json)
 is derived from the English Wiktionary (German entries) extracted by the Kaikki.org / Wiktextract project.
 
 ===============================================================================
@@ -26,7 +27,7 @@ is derived from the English Wiktionary (German entries) extracted by the Kaikki.
 ===============================================================================
 
 The raw lexical dump was deterministically filtered, normalized, and indexed by the
-PDF Language Companion build pipeline (scripts/build-dictionary.mjs):
+PDF Language Companion build pipeline (scripts/build-dictionary.mjs in the source repository):
 - Filtered to German headwords with English glosses
 - Cleaned grammatical notations and redundant definitions
 - Structured multi-sense homographs with gender and plural tags

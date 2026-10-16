@@ -7,7 +7,7 @@ export async function verifyDictionary() {
   console.log('       PDF LANGUAGE COMPANION — DICTIONARY VERIFICATION        ');
   console.log('===============================================================\n');
 
-  const dataDir = path.resolve(process.cwd(), 'src', 'data');
+  const dataDir = path.resolve(process.cwd(), 'public', 'data');
   const dictFile = path.join(dataDir, 'de-en-dictionary.json');
   const inflFile = path.join(dataDir, 'de-en-inflections.json');
   const metaFile = path.join(dataDir, 'de-en-metadata.json');

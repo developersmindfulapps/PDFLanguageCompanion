@@ -239,7 +239,7 @@ Known Limitations
 
 - Scanned / image-only PDFs: The MVP does not contain OCR. Documents made entirely of scanned page images cannot provide selectable text.
 - Document-wide search: Full-text multi-page search is not implemented in MVP v1.
-- Dictionary vocabulary: The bundled German → English dictionary contains 15,159 headwords and 104,252 inflection mappings generated reproducibly from English Wiktionary (German entries).
+- Dictionary vocabulary: The bundled German → English dictionary contains 15,092 headwords and 114,847 inflection mappings generated reproducibly from English Wiktionary (German entries).
 
 Future Roadmap
 
@@ -261,7 +261,7 @@ This abstraction allows future language providers (e.g. Spanish → English, Fre
 
 Dictionary Attribution & Licensing
 
-The German → English dictionary dataset (`src/data/de-en-dictionary.json` and `src/data/de-en-inflections.json`) is derived from English Wiktionary data extracted by the Kaikki.org / Wiktextract project:
+The German → English dictionary dataset (`public/data/de-en-dictionary.json` and `public/data/de-en-inflections.json`) is derived from English Wiktionary data extracted by the Kaikki.org / Wiktextract project:
 - **Upstream Source**: [English Wiktionary](https://en.wiktionary.org/) (German entries)
 - **Extraction Project**: [Kaikki.org / Wiktextract](https://kaikki.org/dictionary/German/) (Tatu Ylonen)
 - **Dump Snapshot**: 2026-09-02 (`enwiktionary-20260902-pages-articles-multistream.xml.bz2`)
